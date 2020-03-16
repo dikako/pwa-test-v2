@@ -1,6 +1,12 @@
-let url = '/';
+let url = {
+    base: '/'
+};
 
-let footerMenu = '.footer-wrapper-list';
+let selector = {
+    footer_menu: '.footer-wrapper-list', 
+    list_program: '.col-4',
+    wacth_trailer: '.watch-button-container'
+};
 
 Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
@@ -9,7 +15,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Login Test', () => {
     beforeEach(() => {
         cy.viewport('iphone-6');
-        cy.visit(url, {
+        cy.visit(url.base, {
             onBeforeLoad: function (win) {
                 const promise = new Promise(function (resolve) { });
                 return win.navigator.serviceWorker.register = () => {
@@ -17,10 +23,14 @@ describe('Login Test', () => {
                 }
             }
         });
-        cy.wait(10000);
+        cy.wait(2000);
     });
 
-    it('On Test - blblbl', () => {
-        
+    it('On Test - Library', () => {
+        cy.get(selector.footer_menu).eq(2).click();
+        cy.wait(2000);
+        cy.get(selector.list_program).eq(0).click();
+        cy.get(selector.wacth_trailer).find('.watch-button').click();
+        cy.wait(5000);
     })
 });

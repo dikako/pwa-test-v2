@@ -1,4 +1,7 @@
-let url = '/';
+let url = {
+    base: '/'
+};
+
 let femail = '#email';
 let fpassword = '#password';
 let fpassword2 = '#password2';
@@ -33,7 +36,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Register Test', () => {
     beforeEach(() => {
         cy.viewport('iphone-6');
-        cy.visit(url, {
+        cy.visit(url.base, {
             onBeforeLoad: function (win) {
                 const promise = new Promise(function (resolve) { });
                 return win.navigator.serviceWorker.register = () => {
@@ -41,7 +44,7 @@ describe('Register Test', () => {
                 }
             }
         });
-        cy.wait(10000);
+        cy.wait(2000);
     });
 
     it('Negative - Register Test By Email [Invalid Email]', () => {

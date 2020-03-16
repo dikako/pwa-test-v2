@@ -1,12 +1,19 @@
-let url = '/';
+let url = {
+    base: '/',
+    base_url: 'https://dev.rctiplus.com',
+};
 
-let footerMenu = '.footer-wrapper-list';
-let listLive = '.tv-wrap';
+let url_tv = {
+    rcti: '/tv/rcti',
+    mnctv: '/tv/mnctv',
+    gtv: '/tv/gtv',
+    inews: '/tv/inews'
+};
 
-let urlRcti = 'https://dev.rctiplus.com/tv/rcti';
-let urlMnctv = 'https://dev.rctiplus.com/tv/mnctv';
-let urlGtv = 'https://dev.rctiplus.com/tv/gtv';
-let urlInews = 'https://dev.rctiplus.com/tv/inews';
+let selector = {
+    footer_menu: '.footer-wrapper-list',
+    live_tv: '.tv-wrap'
+};
 
 Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
@@ -15,7 +22,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 describe('Login Test', () => {
     beforeEach(() => {
         cy.viewport('iphone-6');
-        cy.visit(url, {
+        cy.visit(url.base, {
             onBeforeLoad: function (win) {
                 const promise = new Promise(function (resolve) { });
                 return win.navigator.serviceWorker.register = () => {
@@ -23,25 +30,26 @@ describe('Login Test', () => {
                 }
             }
         });
-        cy.wait(10000);
+        cy.wait(2000);
     });
+    
 
     it('On Test - Validate Url Live Stream', () => {
-        cy.get(footerMenu).eq(1).click();
+        cy.get(selector.footer_menu).eq(1).click();
         cy.wait(5000);
-        cy.url().should('eq', urlRcti);
-
-        cy.get(listLive).find('.row').find('.text-center').eq(1).click();
+        cy.url().should('eq', url.base_url + url_tv.rcti);
+        cy.get(selector.live_tv).find('.row').find('.text-center').eq(1).click();
         cy.wait(5000);
-        cy.url().should('eq', urlMnctv);
-
-        cy.get(listLive).find('.row').find('.text-center').eq(2).click();
+        cy.url().should('eq', url.base_url + url_tv.mnctv);
+        cy.get(selector.live_tv).find('.row').find('.text-center').eq(2).click();
         cy.wait(5000);
-        cy.url().should('eq', urlGtv);
-
-        cy.get(listLive).find('.row').find('.text-center').eq(3).click();
+        cy.url().should('eq', url.base_url + url_tv.gtv);
+        cy.get(selector.live_tv).find('.row').find('.text-center').eq(3).click();
         cy.wait(5000);
-        cy.url().should('eq', urlInews);
+        cy.url().should('eq', url.base_url + url_tv.inews);
+        cy.get(selector.live_tv).find('.row').find('.text-center').eq(0).click();
+        cy.wait(5000);
+        cy.url().should('eq', url.base_url + url_tv.rcti);
     })
     
 });
